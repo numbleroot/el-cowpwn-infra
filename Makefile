@@ -1,4 +1,4 @@
-MANAGER=207.154.199.113
+MANAGER=root@207.154.199.113
 
 .PHONY: sync
 sync:
