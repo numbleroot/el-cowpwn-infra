@@ -1,0 +1,28 @@
+version: "3"
+
+networks:
+  traefik:
+    external: true
+
+services:
+  go:
+    image: metalmatze/el-cowpwn-go
+    command:
+    - "-runAddr=0.0.0.0:3456"
+    networks:
+    - traefik
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      labels:
+      - traefik.frontend.entryPoints=http,https
+      - traefik.frontend.rule=Host:el-cowpwn.de
+      - traefik.port=3456
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 32M

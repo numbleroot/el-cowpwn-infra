@@ -1,0 +1,32 @@
+version: "3"
+
+networks:
+  traefik:
+    external: true
+
+services:
+  traefik:
+    image: traefik:v1.2.1
+    command:
+    - "--acme"
+    - "--acme.email=bambule.bernd@matthiasloibl.com"
+    - "--acme.entrypoint=https"
+    - "--acme.ondemand=true"
+    - "--acme.onhostrule"
+    - "--acme.storage=/etc/traefik/acme/acme.json"
+    - "--defaultentrypoints=http,https"
+    - "--docker"
+    - "--docker.domain=el-cowpwn.de"
+    - "--docker.swarmmode"
+    - "--docker.watch"
+    - "--entryPoints=Name:http Address::80 Redirect.EntryPoint:https"
+    - "--entryPoints=Name:https Address::443 TLS"
+    - "--web"
+    ports:
+    - 80:80
+    - 443:443
+    networks:
+    - traefik
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - /srv/traefik:/etc/traefik/acme/
